@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editare Vânzător</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+
+
+  <h1 class="text-center">Editare Vânzător</h1>
+  <form th:action="@{/vanzatori/update}" method="post">
+    <input type="hidden" th:value="${vanzator.vanzatorID}" name="vanzatorID">
+    <div class="mb-3">
+      <label for="nume" class="form-label">Nume</label>
+      <input type="text" class="form-control" id="nume" name="nume" th:value="${vanzator.nume}" required>
+    </div>
+    <div class="mb-3">
+      <label for="prenume" class="form-label">Prenume</label>
+      <input type="text" class="form-control" id="prenume" name="prenume" th:value="${vanzator.prenume}" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" th:value="${vanzator.email}" required>
+    </div>
+    <div class="mb-3">
+      <label for="telefon" class="form-label">Telefon</label>
+      <input type="text" class="form-control" id="telefon" name="telefon" th:value="${vanzator.telefon}" maxlength="10" required>
+    </div>
+    <div class="mb-3">
+      <label for="cnp" class="form-label">CNP</label>
+      <input type="text" class="form-control" id="cnp" name="cnp" th:value="${vanzator.cnp}" maxlength="13" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvează</button>
+    <a href="/vanzatori" class="btn btn-secondary">Anulează</a>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistici - Evidența Vânzărilor de Mașini</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 20px;
+    }
+    .stat-title {
+      margin-bottom: 40px; /* Adaugă spațiu între titlu și secțiuni */
+    }
+    .stat-section {
+      margin-bottom: 30px;
+    }
+    .stat-section h3 {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .stat-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stat-links a {
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      text-align: center;
+      background-color: #0d6efd;
+      color: #fff;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .stat-links a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="text-center stat-title">Statistici</h1>
+
+  <div class="row">
+    <!-- Despre Vânzări -->
+    <div class="col-md-4 stat-section">
+      <h3>Despre Vânzări</h3>
+      <div class="stat-links">
+        <a href="/statistici/vanzari-interval">Vânzări pe un interval de zile</a>
+        <a href="/statistici/top-marci-modele">Top Mărci și Modele Vândute</a>
+        <a href="/statistici/top-luni-vanzari">Top 3 Luni cu Cele Mai Multe Vânzări</a>
+
+      </div>
+    </div>
+
+    <!-- Despre Vânzători -->
+    <div class="col-md-4 stat-section">
+      <h3>Despre Vânzători</h3>
+      <div class="stat-links">
+        <a href="/statistici/top-vanzatori">Top Vânzători</a>
+        <a href="/statistici/venituri-vanzatori">Venituri și Mașini Vândute de Vânzători</a>
+        <a href="/statistici/cel-mai-profitabil-model">Cel Mai Profitabil Model pentru Fiecare Vânzător</a>
+      </div>
+    </div>
+
+    <!-- Despre Clienți -->
+    <div class="col-md-4 stat-section">
+      <h3>Despre Clienți</h3>
+      <div class="stat-links">
+        <a href="/statistici/clienti-fani-marca">Clienți Exclusivi ai unei Mărci</a>
+        <a href="/statistici/clienti-peste-medie">Clienți cu Mașini Peste Media Prețurilor</a>
+        <a href="/statistici/clienti-metode-plata">Clienți după Metodă de Plată</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

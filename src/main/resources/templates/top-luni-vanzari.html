@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Top 3 Luni cu Cele Mai Multe Vânzări</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="/dashboard">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="/masini">Mașini</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vanzatori">Vânzători</a></li>
+      <li class="nav-item"><a class="nav-link" href="/clienti">Clienți</a></li>
+      <li class="nav-item"><a class="nav-link" href="/vanzari">Vânzări</a></li>
+      <li class="nav-item"><a class="nav-link" href="/statistici">Statistici</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Top 3 Luni cu Cele Mai Multe Vânzări</h1>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>An</th>
+      <th>Luna</th>
+      <th>Număr Vânzări</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="luna : ${topLuniVanzari}">
+      <td th:text="${luna[0]}">An</td>
+      <td th:text="${luna[1]}">Luna</td>
+      <td th:text="${luna[2]}">Număr Vânzări</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

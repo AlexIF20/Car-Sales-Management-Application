@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalii Mașină</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+  <script>
+    function toggleForm(formId) {
+      const form = document.getElementById(formId);
+      form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+    }
+  </script>
+</head>
+<body>
+
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+
+
+  <h1 class="text-center">Detalii Mașină</h1>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Informații Mașină</h5>
+      <p><strong>Marcă:</strong> <span th:text="${marca}">Marcă</span></p>
+      <p><strong>Model:</strong> <span th:text="${model}">Model</span></p>
+      <p><strong>An Fabricație:</strong> <span th:text="${masina.anFabricatie}">An</span></p>
+      <p><strong>VIN:</strong> <span th:text="${masina.vin}">VIN</span></p>
+      <p>
+        <strong>Vândută:</strong>
+      <form th:action="@{/masini/updateVanduta}" method="post" style="display: inline;"
+            th:if="${client == null or vanzator == null}">
+        <input type="hidden" name="masinaID" th:value="${masina.masinaID}">
+        <button type="submit" class="btn btn-link p-0 m-0 align-baseline" th:text="${masina.vanduta} ? 'Da' : 'Nu'"></button>
+      </form>
+      <span th:if="${client != null and vanzator != null}" th:text="${masina.vanduta} ? 'Da' : 'Nu'"></span>
+      </p>
+
+    </div>
+  </div>
+
+  <div th:if="${vanzator != null and client != null}">
+    <p><strong>Client:</strong> <span th:text="${client.nume + ' ' + client.prenume}">Nume Client</span></p>
+    <p><strong>Vânzător:</strong> <span th:text="${vanzator.nume + ' ' + vanzator.prenume}">Nume Vânzător</span></p>
+  </div>
+
+  <!-- Afișare informații necunoscute doar dacă mașina este vândută -->
+  <div th:if="${masina.vanduta and client == null and vanzator == null}">
+    <p><strong>Informații necunoscute despre vânzare</strong></p>
+  </div>
+
+  <!-- Buton și formular Transformă în Vânzare -->
+  <div>
+    <div th:if="${!masina.vanduta}">
+      <button class="btn btn-primary mb-3" onclick="toggleForm('transformaInVanzareForm')">Transformă în Vânzare</button>
+      <div id="transformaInVanzareForm" class="form-container">
+        <h3>Transformă în Vânzare</h3>
+        <form th:action="@{/masini/transformaInVanzare}" method="post">
+          <input type="hidden" name="masinaID" th:value="${masina.masinaID}">
+          <div class="mb-3">
+            <label for="clientCNP" class="form-label">Selectează Client</label>
+            <select class="form-select" id="clientCNP" name="clientCNP" required>
+              <option value="" disabled selected>Selectează Client</option>
+              <option th:each="client : ${clienti}" th:value="${client.cnp}" th:text="${client.nume + ' ' + client.prenume + ' (' + client.cnp + ')'}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="vanzatorCNP" class="form-label">Selectează Vânzător</label>
+            <select class="form-select" id="vanzatorCNP" name="vanzatorCNP" required>
+              <option value="" disabled selected>Selectează Vânzător</option>
+              <option th:each="vanzator : ${vanzatori}" th:value="${vanzator.cnp}" th:text="${vanzator.nume + ' ' + vanzator.prenume + ' (' + vanzator.cnp + ')'}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="dataVanzare" class="form-label">Selectează Data Vânzării</label>
+            <input type="date" class="form-control" id="dataVanzare" name="dataVanzare" required>
+          </div>
+          <div class="mb-3">
+            <label for="pretVanzare" class="form-label">Introduceți Prețul Vânzării</label>
+            <input type="number" class="form-control" id="pretVanzare" name="pretVanzare" step="0.01" required>
+          </div>
+          <div class="mb-3">
+            <label for="metodaPlata" class="form-label">Selectează Metoda de Plată</label>
+            <select class="form-select" id="metodaPlata" name="metodaPlata" required>
+              <option value="" disabled selected>Selectează Metoda</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Transfer">Transfer Bancar</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Transformă în Vânzare</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabelul pentru caracteristicile mașinii -->
+  <div>
+    <h3>Caracteristici</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Nume Caracteristică</th>
+        <th>Acțiuni</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="caracteristica, iterStat : ${caracteristici}">
+        <td th:text="${iterStat.index + 1}">#</td>
+        <td th:text="${caracteristica.nume}">Nume Caracteristică</td>
+        <td>
+          <form th:action="@{/masini/detalii/{vin}/deleteCaracteristica/{caracteristicaID}(vin=${masina.vin}, caracteristicaID=${caracteristica.caracteristicaID})}" method="post">
+            <button type="submit" class="btn btn-danger">Șterge</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Buton și formular Adaugă Caracteristică -->
+  <div>
+    <button class="btn btn-secondary mb-3" onclick="toggleForm('adaugaCaracteristicaForm')">Adaugă Caracteristică</button>
+    <div id="adaugaCaracteristicaForm" class="form-container">
+      <h3>Adaugă Caracteristică</h3>
+      <form th:action="@{/masini/addCaracteristica}" method="post">
+        <input type="hidden" name="masinaID" th:value="${masina.masinaID}">
+        <div class="mb-3">
+          <label for="caracteristicaID" class="form-label">Caracteristică</label>
+          <select class="form-select" id="caracteristicaID" name="caracteristicaID" required>
+            <option value="" disabled selected>Selectează Caracteristica</option>
+            <option th:each="caracteristica : ${toateCaracteristicile}" th:value="${caracteristica.caracteristicaID}" th:text="${caracteristica.nume}"></option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Adaugă Caracteristica</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

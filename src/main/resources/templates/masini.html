@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestionare Mașini</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    .home-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container mt-5">
+
+  <h1 class="text-center">Gestionare Mașini</h1>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Marcă</th>
+      <th>Model</th>
+      <th>An Fabricație</th>
+      <th>VIN</th>
+      <th>Acțiuni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="masina : ${masini}">
+      <td th:text="${masina[0]}">Marcă</td>
+      <td th:text="${masina[1]}">Model</td>
+      <td th:text="${masina[2]}">An Fabricație</td>
+      <td><a th:href="@{'/masini/detalii/' + ${masina[3]}}" th:text="${masina[3]}">VIN</a></td>
+      <td>
+        <form th:action="@{'/masini/delete/' + ${masina[4]}}" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="btn btn-danger">Șterge</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <button id="toggleFormButton" class="btn btn-secondary mb-3">Adaugă o mașină</button>
+
+  <div id="addMasinaFormContainer" style="display: none;">
+    <h2>Adaugă Mașină</h2>
+    <form th:action="@{/masini/add}" method="post" id="addMasinaForm">
+      <div class="mb-3">
+        <label for="marcaID" class="form-label">Marca</label>
+        <select class="form-select" id="marcaID" name="marcaID" required>
+          <option value="" disabled selected>Selectează Marca</option>
+          <option th:each="marca : ${marci}" th:value="${marca.marcaID}" th:text="${marca.nume}"></option>
+        </select>
+      </div>
+      <div class="mb-3" id="model-container" style="display: none;">
+        <label for="modelID" class="form-label">Model</label>
+        <select class="form-select" id="modelID" name="modelID" required>
+          <option value="" disabled selected>Selectează Modelul</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="anFabricatie" class="form-label">An Fabricație</label>
+        <input type="date" class="form-control" id="anFabricatie" name="anFabricatie" required>
+      </div>
+      <div class="mb-3">
+        <label for="vin" class="form-label">VIN</label>
+        <input type="text" class="form-control" id="vin" name="vin" maxlength="17" required>
+        <div id="vinError" class="text-danger mt-2" style="display: none;">VIN-ul trebuie să aibă exact 17 caractere!</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Adaugă Mașină</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Ascunde dropdown-ul pentru model la început
+    $('#model-container').hide();
+
+    // Toggle pentru formular
+    $('#toggleFormButton').click(function () {
+      const formContainer = $('#addMasinaFormContainer');
+      if (formContainer.is(':visible')) {
+        formContainer.slideUp();
+        $(this).text('Adaugă o mașină');
+      } else {
+        formContainer.slideDown();
+        $(this).text('Ascunde Formularul');
+      }
+    });
+
+    $('#marcaID').change(function () {
+      const marcaID = $(this).val();
+
+      // Resetează dropdown-ul pentru model
+      $('#modelID').empty().append('<option value="" disabled selected>Selectează Modelul</option>');
+
+      if (marcaID) {
+        // Afișează dropdown-ul pentru model
+        $('#model-container').fadeIn();
+
+        // Trimite cerere AJAX pentru modelele asociate
+        $.ajax({
+          url: '/masini/getModelsByMarca',
+          type: 'POST',
+          data: { marcaID: marcaID },
+          success: function (models) {
+            models.forEach(model => {
+              $('#modelID').append(`<option value="${model.modelID}">${model.numeModel}</option>`);
+            });
+          },
+          error: function (err) {
+            console.error("Eroare la încărcarea modelelor:", err);
+          }
+        });
+      } else {
+        // Ascunde dropdown-ul pentru model dacă nu e selectată o marcă validă
+        $('#model-container').hide();
+      }
+    });
+
+    // Validare pentru VIN
+    $('#addMasinaForm').submit(function(event) {
+      const vin = $('#vin').val();
+      if (vin.length !== 17) {
+        event.preventDefault();
+        $('#vinError').show();
+      } else {
+        $('#vinError').hide();
+      }
+    });
+  });
+</script>
+</body>
+</html>

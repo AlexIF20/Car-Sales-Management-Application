@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistici Interval</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .section-title {
+      margin-bottom: 30px;
+    }
+    .form-container {
+      margin-bottom: 40px;
+    }
+    .interval-display {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container mt-5">
+  <h1 class="text-center section-title">Vânzări pe un interval de zile</h1>
+
+  <div class="form-container">
+    <form id="statisticiForm" class="mb-3">
+      <div class="row">
+        <div class="col">
+          <label for="dataInceput" class="form-label">Data Început</label>
+          <input type="date" id="dataInceput" name="dataInceput" class="form-control" th:value="${dataInceput}">
+        </div>
+        <div class="col">
+          <label for="dataSfarsit" class="form-label">Data Sfârșit</label>
+          <input type="date" id="dataSfarsit" name="dataSfarsit" class="form-control" th:value="${dataSfarsit}">
+        </div>
+        <div class="col d-flex align-items-end">
+          <button type="button" class="btn btn-primary me-2" id="searchButton">Caută</button>
+          <button type="button" class="btn btn-secondary" id="resetButton">Resetează</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Afișarea intervalului selectat -->
+  <div class="text-center interval-display">
+    <strong>Interval selectat:</strong>
+    <span id="intervalDisplay" th:text="'De la ' + ${dataInceput ?: 'Nicio dată'} + ' până la ' + ${dataSfarsit ?: 'Nicio dată'}"></span>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Marcă</th>
+      <th>Model</th>
+      <th>Data Vânzării</th>
+    </tr>
+    </thead>
+    <tbody id="resultsTable">
+    <tr th:each="clientMasina : ${clientiMasini}">
+      <td th:text="${clientMasina[0] + ' ' + clientMasina[1]}">Client</td>
+      <td th:text="${clientMasina[2]}">Marcă</td>
+      <td th:text="${clientMasina[3]}">Model</td>
+      <td th:text="${clientMasina[4]}">Data Vânzării</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Funcționalitate pentru butonul de resetare
+    $('#resetButton').click(function () {
+      $('#dataInceput').val(''); // Resetează câmpul Data Început
+      $('#dataSfarsit').val(''); // Resetează câmpul Data Sfârșit
+      $('#intervalDisplay').text('Nicio dată selectată');
+      $('#resultsTable').empty(); // Golește tabelul
+    });
+
+    // Funcționalitate pentru butonul de căutare
+    $('#searchButton').click(function () {
+      const dataInceput = $('#dataInceput').val();
+      const dataSfarsit = $('#dataSfarsit').val();
+
+      // Validează datele
+      if (!dataInceput || !dataSfarsit) {
+        alert('Te rog să selectezi ambele date!');
+        return;
+      }
+
+      // Actualizează intervalul selectat
+      $('#intervalDisplay').text(`De la ${dataInceput} până la ${dataSfarsit}`);
+
+      // Simulează rezultate (trebuie implementat backend pentru date reale)
+      const mockData = [
+        { client: 'Ion Popescu', marca: 'Dacia', model: 'Duster', data: '2023-01-15' },
+        { client: 'Maria Ionescu', marca: 'Mazda', model: 'CX-5', data: '2023-02-20' }
+      ];
+
+      // Populează tabelul cu date
+      const tableBody = $('#resultsTable');
+      tableBody.empty();
+      mockData.forEach(row => {
+        const tr = `
+          <tr>
+            <td>${row.client}</td>
+            <td>${row.marca}</td>
+            <td>${row.model}</td>
+            <td>${row.data}</td>
+          </tr>`;
+        tableBody.append(tr);
+      });
+    });
+  });
+</script>
+</body>
+</html>

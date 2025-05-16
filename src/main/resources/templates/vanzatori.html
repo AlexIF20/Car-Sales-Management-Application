@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestionare Vânzători</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    .home-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container mt-5">
+
+
+  <h1 class="text-center">Gestionare Vânzători</h1>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Nume</th>
+      <th>Prenume</th>
+      <th>Email</th>
+      <th>Telefon</th>
+      <th>CNP</th>
+      <th>Acțiuni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vanzator : ${vanzatori}">
+      <td th:text="${vanzator.nume}"></td>
+      <td th:text="${vanzator.prenume}"></td>
+      <td th:text="${vanzator.email}"></td>
+      <td th:text="${vanzator.telefon}"></td>
+      <td th:text="${vanzator.cnp}"></td>
+      <td>
+        <a th:href="@{'/vanzatori/edit/' + ${vanzator.vanzatorID}}" class="btn btn-warning">Editează</a>
+        <form th:action="@{'/vanzatori/delete/' + ${vanzator.vanzatorID}}" method="post" style="display: inline;">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="btn btn-danger">Șterge</button>
+        </form>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+
+  <button id="toggleFormButton" class="btn btn-secondary mb-3">Adaugă un Vânzător</button>
+
+  <div id="addVanzatorFormContainer" style="display: none;">
+    <h2>Adaugă un Vânzător</h2>
+    <form th:action="@{/vanzatori/add}" method="post" id="addVanzatorForm">
+      <div class="mb-3">
+        <label for="nume" class="form-label">Nume</label>
+        <input type="text" class="form-control" id="nume" name="nume" required>
+      </div>
+      <div class="mb-3">
+        <label for="prenume" class="form-label">Prenume</label>
+        <input type="text" class="form-control" id="prenume" name="prenume" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <div class="mb-3">
+        <label for="telefon" class="form-label">Telefon</label>
+        <input type="text" class="form-control" id="telefon" name="telefon" maxlength="10" required>
+      </div>
+      <div class="mb-3">
+        <label for="cnp" class="form-label">CNP</label>
+        <input type="text" class="form-control" id="cnp" name="cnp" maxlength="13" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Adaugă Vânzător</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#toggleFormButton').click(function () {
+      const formContainer = $('#addVanzatorFormContainer');
+      if (formContainer.is(':visible')) {
+        formContainer.slideUp();
+        $(this).text('Adaugă un Vânzător');
+      } else {
+        formContainer.slideDown();
+        $(this).text('Ascunde Formularul');
+      }
+    });
+  });
+</script>
+</body>
+</html>

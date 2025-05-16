@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clienți Fani Marcă</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Clienți care cumpără predominant mașini din marca <span th:text="${marca}">Marca</span></h1>
+
+  <!-- Form pentru selectarea mărcii -->
+  <div class="mb-4">
+    <form action="/statistici/clienti-fani-marca" method="get">
+      <select name="marca" class="form-select" required>
+        <option value="" disabled selected>Selectează marca</option>
+        <option th:each="marca : ${marci}" th:value="${marca}" th:text="${marca}"></option>
+      </select>
+      <button type="submit" class="btn btn-primary mt-3">Caută</button>
+    </form>
+
+  </div>
+
+  <!-- Mesaj de eroare -->
+  <div class="alert alert-danger text-center" th:if="${error}" th:text="${error}"></div>
+
+  <!-- Tabel cu clienții -->
+  <div th:if="${clientiFaniMarca}">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Client</th>
+        <th>Număr Mașini Cumpărate</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="client : ${clientiFaniMarca}">
+        <td th:text="${client[0]}">Nume Client</td>
+        <td th:text="${client[1]}">Număr Mașini</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mesaj în cazul în care nu există rezultate -->
+  <div class="text-center mt-4" th:if="${clientiFaniMarca == null || #lists.isEmpty(clientiFaniMarca)}">
+    <p class="text-muted">Nu există clienți care cumpără predominant mașini din această marcă.</p>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

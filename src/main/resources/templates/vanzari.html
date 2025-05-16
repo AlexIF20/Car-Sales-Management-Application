@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestionare Vânzări</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    .home-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+
+  <h1 class="text-center">Gestionare Vânzări</h1>
+
+  <!-- Tabelul pentru vânzări existente -->
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Vanzator</th>
+      <th>Marca</th>
+      <th>Model</th>
+      <th>VIN</th>
+      <th>Pret  (€)</th>
+      <th>Metoda Plata</th>
+      <th>Data</th>
+      <th>Actiuni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vanzare : ${vanzari}">
+      <td th:text="${vanzare[1]}"></td>
+      <td th:text="${vanzare[2]}"></td>
+      <td th:text="${vanzare[3]}"></td>
+      <td th:text="${vanzare[4]}"></td>
+      <td><a th:href="@{'/masini/detalii/' + ${vanzare[5]}}" th:text="${vanzare[5]}">VIN</a></td>
+      <td th:text="${vanzare[6]}"></td>
+      <td th:text="${vanzare[7]}"></td>
+      <td th:text="${vanzare[8]}"></td>
+      <td>
+        <form th:action="@{/vanzari/delete/{id}(id=${vanzare[0]})}" method="post" style="display: inline;">
+          <button type="submit" class="btn btn-danger">Șterge</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Clienți cu Mașini Peste Media Prețurilor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Clienți cu Mașini Peste Media Prețurilor</h1>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Nume Client</th>
+      <th>Media Prețurilor (€)</th>
+      <th>Model Mașină</th>
+      <th>Preț Mașină (€)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${clientiPesteMedia}">
+      <td th:text="${entry[0]}">Nume Client</td>
+      <td th:text="${entry[1]}">Media Prețurilor</td>
+      <td th:text="${entry[2]}">Model Mașină</td>
+      <td th:text="${entry[3]}">Preț Mașină</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

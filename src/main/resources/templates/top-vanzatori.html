@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Vânzători</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    .section-title {
+      margin-bottom: 20px;
+    }
+    .table-title {
+      margin-bottom: 10px;
+      margin-top: 30px;
+    }
+    .content-container {
+      margin-top: 30px;
+    }
+    .left-section {
+      padding-right: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h1 class="text-center section-title">Top Vânzători</h1>
+
+  <div class="row content-container">
+    <!-- Secțiunea pentru "Top 5 cei mai buni vânzători de până acum" -->
+    <div class="col-md-6 left-section">
+      <h3 class="text-left table-title">De până acum</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Vânzător</th>
+          <th>Număr Vânzări</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vanzator : ${topVanzatoriAllTime}">
+          <td th:text="${vanzator[0]}">Vânzător</td>
+          <td th:text="${vanzator[1]}">Număr Vânzări</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Secțiunea pentru "Top 5 Vânzători pe Interval" -->
+    <div class="col-md-6">
+      <h3 class="text-left table-title">Într-un interval de zile</h3>
+      <form method="get" action="/statistici/top-vanzatori-interval" class="mb-3">
+        <div class="row">
+          <div class="col">
+            <label for="dataInceput" class="form-label">Data Început</label>
+            <input type="date" id="dataInceput" name="dataInceput" class="form-control" th:value="${dataInceput}">
+          </div>
+          <div class="col">
+            <label for="dataSfarsit" class="form-label">Data Sfârșit</label>
+            <input type="date" id="dataSfarsit" name="dataSfarsit" class="form-control" th:value="${dataSfarsit}">
+          </div>
+          <div class="col d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Caută</button>
+          </div>
+        </div>
+      </form>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Vânzător</th>
+          <th>Număr Vânzări</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vanzator : ${topVanzatoriInterval}">
+          <td th:text="${vanzator[0]}">Vânzător</td>
+          <td th:text="${vanzator[1]}">Număr Vânzări</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

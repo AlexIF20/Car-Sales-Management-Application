@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Mărci și Modele</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+  <style>
+    .section-title {
+      margin-bottom: 40px;
+      margin-top: 20px;
+    }
+    .table-title {
+      margin-bottom: 20px;
+      margin-top: 30px;
+    }
+    .content-container {
+      margin-top: 30px;
+    }
+    .left-section {
+      padding-right: 30px;
+    }
+    .table-container {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Comun -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/masini">Mașini</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzatori">Vânzători</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clienti">Clienți</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/vanzari">Vânzări</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/statistici">Statistici</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h1 class="text-center section-title">Top Mărci și Modele Vândute</h1>
+
+  <div class="row content-container">
+    <!-- Tabel pentru Top Mărci -->
+    <div class="col-md-6 left-section table-container">
+      <h2 class="text-center table-title">Top Mărci</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Marcă</th>
+          <th>Număr Vânzări</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="marca : ${topMarci}">
+          <td th:text="${marca[0]}">Marcă</td>
+          <td th:text="${marca[1]}">Număr Vânzări</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabel pentru Top Modele -->
+    <div class="col-md-6 table-container">
+      <h2 class="text-center table-title">Top Modele</h2>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Model</th>
+          <th>Număr Vânzări</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="model : ${topModele}">
+          <td th:text="${model[0]}">Model</td>
+          <td th:text="${model[1]}">Număr Vânzări</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>
